@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"math"
 	"mime"
 	"net/http"
@@ -201,6 +202,7 @@ func RetrieveToken(ctx context.Context, clientID, clientSecret, tokenURL string,
 	}
 	token, err := doTokenRoundTrip(ctx, req)
 	if err != nil && needsAuthStyleProbe {
+		log.Printf("tried RetrieveToken with authstyle: %d. Err: %+v\nTrying again with AuthStyleInParams", authStyle, err)
 		// If we get an error, assume the server wants the
 		// clientID & clientSecret in a different form.
 		// See https://code.google.com/p/goauth2/issues/detail?id=31 for background.
